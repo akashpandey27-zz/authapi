@@ -13,10 +13,11 @@ npm i
 npm start
 ```
 ## .env file configuration
+```env
 PGUSER= [postgres username]
 PGPASS= [postgres password]
 PGDATABASE= [postgres database]
-
+```
 ## Postgresql create table script
 
 ```sql
