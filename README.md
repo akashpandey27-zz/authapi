@@ -1,61 +1,78 @@
-# Sudoku Validator
+# Auth API
 
-Node.js Express API to register user, authenticate user and reset user password
+Node.js Express API to register user, authenticate user and reset user password 
+Backend: Postgresql
 
 ## Running Locally
 
-Make sure you have [Node.js](http://nodejs.org/) and Git.
+Make sure you have [Node.js](http://nodejs.org/), [Postgresql](https://www.postgresql.org) Git.
 ```sh
-git clone https://github.com/akashpandey27/sudoku-validator.git
-cd sudoku-validator
+git clone https://github.com/akashpandey27/authapi.git
+cd authapi
 npm i
 npm start
 ```
+## .env file configuration
+PGUSER= [postgres username]
+PGPASS= [postgres password]
+PGDATABASE= [postgres database]
+
+## Postgresql create table script
+
+```sql
+CREATE TABLE public."user123"
+(
+  id serial PRIMARY KEY,
+  email text UNIQUE,
+  password text,
+  name text
+)
+```
+
 
 Your app should now be running on [localhost:300](http://localhost:3000/sudoku-validator).
+
+
 
 ## Running sample 
 ### Use the following cURL request to check the API
 
-Valid Solution 
+Register new user
 ```sh
 curl -X POST \
-  http://localhost:3000/sudoku-validator \
+  http://localhost:3000/auth/create \
   -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
+  -H 'Postman-Token: 02f1d782-0be5-498a-868d-b783f00c285d' \
   -d '{
-	"grid": [
-	 	[6, 7, 2, 1, 9, 5, 3, 4, 8],
-		[1, 9, 8, 3, 4, 2, 5, 6, 7],
-		[5, 3, 4, 6, 7, 8, 9, 1, 2],
-		[4, 2, 6, 8, 5, 3, 7, 9, 1],
-		[7, 1, 3, 9, 2, 4, 8, 5, 6],
-		[8, 5, 9, 7, 6, 1, 4, 2, 3],
-		[2, 8, 7, 4, 1, 9, 6, 3, 5],
-		[3, 4, 5, 2, 8, 6, 1, 7, 9],
-		[9, 6, 1, 5, 3, 7, 2, 8, 4]
-	]
-	}'
+	"name": "akash pandey",
+	"email": "akashpandey@gmail.com",
+	"password": "testpass1"
+}'
 ```
 
-Invalid Solution
+Authenticate user 
 
 ```sh
 curl -X POST \
-  http://localhost:3000/sudoku-validator \
+  http://localhost:3000/auth/login \
   -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
+  -H 'Postman-Token: d39b3b55-0b3a-4db5-ac37-71dab3bc2890' \
   -d '{
-	"grid": [
-	 	[6, 7, 2, 1, 9, 5, 3, 4, 8],
-		[1, 9, 8, 3, 4, 1, 5, 6, 7],
-		[5, 3, 4, 6, 7, 8, 9, 1, 2],
-		[4, 2, 6, 8, 5, 3, 7, 9, 1],
-		[7, 1, 3, 9, 2, 4, 8, 5, 6],
-		[8, 5, 9, 7, 6, 1, 4, 2, 3],
-		[2, 8, 7, 4, 1, 9, 6, 3, 5],
-		[3, 4, 5, 2, 8, 6, 1, 7, 9],
-		[9, 6, 1, 5, 3, 7, 2, 8, 4]
-	]
-	}'
+	"email": "akashpandey@gmail.com",
+	"password": "testpass1"
+}'
+```
+Rest Password
+
+```sh
+curl -X POST \
+  'http://localhost:3000/auth/reset?key=akashpandey27@gmail.com' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -H 'Postman-Token: 595dd22d-6748-4fe3-8d3e-f23b2bd9edd1' \
+  -d '{
+	"password": "testpass1"
+}'
 ```
